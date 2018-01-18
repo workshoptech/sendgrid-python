@@ -8,6 +8,8 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/sendgrid.svg?style=social&label=Follow)](https://twitter.com/sendgrid)
 [![GitHub contributors](https://img.shields.io/github/contributors/sendgrid/sendgrid-python.svg)](https://github.com/sendgrid/sendgrid-python/graphs/contributors)
 
+
+
 **NEW:** 
 
 * Subscribe to email [notifications](https://dx.sendgrid.com/newsletter/python) for releases and breaking changes.
