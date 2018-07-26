@@ -35,8 +35,8 @@ def build_personalization(personalization):
     for header in personalization['headers']:
         mock_personalization.add_header(header)
 
-    for substitution in personalization['substitutions']:
-        mock_personalization.add_substitution(substitution)
+    for dynamic_template_data in personalization['dynamic_template_data']:
+        mock_personalization.add_dynamic_template_data(dynamic_template_data)
 
     for arg in personalization['custom_args']:
         mock_personalization.add_custom_arg(arg)
@@ -69,8 +69,8 @@ def get_mock_personalization_dict():
     mock_pers['headers'] = [Header("X-Test", "test"),
                             Header("X-Mock", "true")]
 
-    mock_pers['substitutions'] = [Substitution("%name%", "Example User"),
-                                  Substitution("%city%", "Denver")]
+    mock_pers['dynamic_template_data'] = [DynamicData("name", "Example User"),
+                                          DynamicData("city", "Denver")]
 
     mock_pers['custom_args'] = [CustomArg("user_id", "343"),
                                 CustomArg("type", "marketing")]

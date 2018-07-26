@@ -1,3 +1,6 @@
+import warnings
+
+
 class Personalization(object):
     """A Personalization defines who should receive an individual message and
     how that message should be handled.
@@ -10,6 +13,7 @@ class Personalization(object):
         self._bccs = []
         self._subject = None
         self._headers = []
+        self._dynamic_template_data = []
         self._substitutions = []
         self._custom_args = []
         self._send_at = None
@@ -107,6 +111,31 @@ class Personalization(object):
         self._headers.append(header.get())
 
     @property
+    def dynamic_template_data(self):
+        """Dynamic Template Data to be applied within this Personalization.
+        :rtype: list(dict)
+        """
+        return self._dynamic_template_data
+
+    @dynamic_template_data.setter
+    def dynamic_template_data(self, value):
+        if len(self.substitutions) > 0:
+            warnings.warn(
+                "Dynamic template data should not be used in conjunction with "
+                "substitutions")
+        self._dynamic_template_data = value
+
+    def add_dynamic_template_data(self, dynamic_template_data):
+        """Add a new Substitution to this Personalization.
+        :type substitution: Substitution
+        """
+        if len(self.substitutions) > 0:
+            warnings.warn(
+                "Dynamic template data should not be used in conjunction with "
+                "substitutions")
+        self._dynamic_template_data.append(dynamic_template_data.get())
+
+    @property
     def substitutions(self):
         """Substitutions to be applied within this Personalization.
 
@@ -116,6 +145,10 @@ class Personalization(object):
 
     @substitutions.setter
     def substitutions(self, value):
+        if len(self.dynamic_template_data) > 0:
+            warnings.warn(
+                "Substitutions should not be used in conjunction with "
+                "dynamic template data")
         self._substitutions = value
 
     def add_substitution(self, substitution):
@@ -123,6 +156,10 @@ class Personalization(object):
 
         :type substitution: Substitution
         """
+        if len(self.dynamic_template_data) > 0:
+            warnings.warn(
+                "Substitutions should not be used in conjunction with "
+                "dynamic template data")
         self._substitutions.append(substitution.get())
 
     @property
@@ -183,6 +220,12 @@ class Personalization(object):
             for key in self.headers:
                 headers.update(key)
             personalization["headers"] = headers
+
+        if self.dynamic_template_data:
+            dynamic_template_data = {}
+            for key in self.dynamic_template_data:
+                dynamic_template_data.update(key)
+            personalization["dynamic_template_data"] = dynamic_template_data
 
         if self.substitutions:
             substitutions = {}
